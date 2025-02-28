@@ -45,6 +45,12 @@ header > a > h1 {
   text-shadow: 0 0px 12px white;
 }
 
+img
+{
+  border-radius: solid black 8px;
+}
+
+
 footer {
   min-height: 2rem;
   background-color: var(--red-lighter);
