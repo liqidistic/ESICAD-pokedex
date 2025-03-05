@@ -19,36 +19,59 @@ require_once("head.php");
 
 <?php
 
-$sql = "SELECT * FROM Pokemon ORDER BY IdPokemon ASC";
-$result = mysqli_query($databaseConnection, $sql);
 
-echo "<table style='width: 100%; border-spacing: 20px;'>"; // Table avec un espacement entre les cellules
+$sql = "SELECT 
+            p.IdPokemon, p.NomPokemon, p.UrlPhoto, p.PtsVie, p.PtsDefense, 
+            p.PtsVitesse, p.PtsSpeciaux, p.DateAjout, 
+            t1.NomType AS Type1, t2.NomType AS Type2 
+        FROM pokemon p
+        LEFT JOIN typepokemon t1 ON p.IdType1 = t1.IdType
+        LEFT JOIN typepokemon t2 ON p.IdType2 = t2.IdType
+        ORDER BY p.IdPokemon ASC";
 
-$count = 0; // Compteur pour gérer les colonnes
+$result = $databaseConnection->query($sql);
 
-if(mysqli_num_rows($result) > 0){
-    echo "<tr>"; // Début de la première ligne de la table
+echo "<table style='width: 100%; text-align: center; border-collapse: collapse;'>";
+echo "<tr>"; // Début de la première ligne
 
-    while($row = mysqli_fetch_assoc($result)){
+$count = 0;
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        if ($count % 4 == 0 && $count > 0) {
+            echo "</tr><tr>"; // Retour à la ligne tout les 4 Pokémon
         
-        if ($count % 4 == 0 && $count > 0) { 
-            echo "</tr><tr>";  // On crée une nouvelle ligne tous les 4 pokémons
         }
-        
-        // Affichage d'une cellule avec une bordure autour du Pokémon
-        echo "<td style='width: 23%; text-align: center; padding: 10px; border: 2px solid #000; border-radius: 10px;'>";
-        echo "<img src='" . $row["UrlPhoto"] . "' alt='" . $row["NomPokemon"] . "' style='max-width: 100%; max-height: 150px; margin-bottom: 10px;' />";
-        echo "<p>" . $row["NomPokemon"] . "</p>";
-        echo "<p>" . $row["IdPokemon"] . "</p>";
-        echo "</td>"; // Fin de la cellule contenant le Pokémon
+        echo "<td style='width: 25%; padding: 15px; border: 2px solid #ccc; 
+                        border-radius: 10px; text-align: center; 
+                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); background: #f9f9f9;'>";
 
-        $count++; // Incrémentation du compteur
+        // Rendre la case cliquable ; Conserve le style et evite le soulignement grace à "text-decoration..."
+        echo "<a href='pokemon_detail.php?id=" . $row["IdPokemon"] . "'  
+        style='text-decoration: none; color: inherit; display: block;'>";
+        //Affichage des information des différents pokemons
+        echo "<img src='" . $row["UrlPhoto"] . "' alt='" . $row["NomPokemon"] . "' style='width: 100%; height: 150px; object-fit: contain; border-radius: 20px;' />";
+        echo "<h3>" . $row["NomPokemon"] . "</h3>";
+        echo "<p><strong>Type :</strong> " . $row["Type1"];
+        if (!empty($row["Type2"])) {
+            echo " / " . $row["Type2"];
+        }
+        echo "</p>";
+        echo "<p>Vie: " . $row["PtsVie"] . " | Défense: " . $row["PtsDefense"] . "</p>";
+        echo "<p>Vitesse: " . $row["PtsVitesse"] . " | Spéciaux: " . $row["PtsSpeciaux"] . "</p>";
+        echo "</td>";
+
+        $count++;
     }
-
-    echo "</tr>"; // Fermeture de la dernière ligne
-    echo "</table>"; // Fermeture de la table
+    echo "</a>"; //Fin du lien
+    echo "</tr>"; //Fin du dernier rang
 }
+
+echo "</table>";
+
+$databaseConnection->close();
 ?>
+
 
 <?php
 require_once("footer.php");
