@@ -1,21 +1,8 @@
 <?php
 require_once("database-connection.php");
-?>
-
-<?php
-if (!$databaseConnection) {
-  die("Connection failed: " . mysqli_connect_error());
-}
-echo "<p>" . "Connected successfully" . "</p>" ; 
-?>
-
-<?php
 require_once("head.php");
-?>
 
-<?php
-
-$idPokemon = intval($_GET['id']); // Sécuriser l'entrée ??
+$idPokemon = intval($_GET['id']); // Sécurisation basique de l'entrée
 
 // Définition des couleurs pour chaque type 
 $colors = [
@@ -39,50 +26,69 @@ if ($result->num_rows == 0) {
 }
 
 $pokemon = $result->fetch_assoc();
-
-// Couleur associée au type principal
 $bgColor = isset($colors[$pokemon["Type1"]]) ? $colors[$pokemon["Type1"]] : "#7f8c8d";
-?>
 
-<?php
+// Récupérer l'évolution du Pokémon
+$sqlEvo = "SELECT p.IdPokemon, p.NomPokemon, p.UrlPhoto 
+           FROM evolutions e 
+           JOIN pokemon p ON e.IdEvolution = p.IdPokemon
+           WHERE e.IdAncetre = $idPokemon";
+$resultEvo = $databaseConnection->query($sqlEvo);
 
-$result = $databaseConnection->query($sql);
+// Récupérer l'ancêtre du Pokémon
+$sqlAncetre = "SELECT p.IdPokemon, p.NomPokemon, p.UrlPhoto 
+               FROM evolutions e 
+               JOIN pokemon p ON e.IdAncetre = p.IdPokemon
+               WHERE e.IdEvolution = $idPokemon";
+$resultAncetre = $databaseConnection->query($sqlAncetre);
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    //Placement de l'encart principal
-    echo "<table style='width: 25%; padding: 15px; border: 2px solid #ccc; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        border-radius: 10px; text-align: center; 
-                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); background: #f9f9f9;'>"; 
-    //Encart pour le nom du pokemon, avec couleur selon type
-    echo "<tr><td colspan='2' style='text-align: center; font-size: 22px; font-weight: bold; padding: 10px; background-color: " . 
-    $colors[$row["Type1"]] . "; color: white; border-radius: 10px 10px 0 0;'>" . htmlspecialchars($row["NomPokemon"]) . "</td></tr>";
-    //Image du pokemon
-    echo "<tr><td colspan='2' style='text-align: center;'><img src='" . htmlspecialchars($row["UrlPhoto"]) . "' alt='" . htmlspecialchars($row["NomPokemon"]) . "' style='width: 200px;'></td></tr>";
-    echo "<tr><th style='padding: 10px;'>ID</th><td style='padding: 10px;'>" . $row["IdPokemon"] . "</td></tr>";
-    // Gestion des types avec couleurs associées
-    echo "<tr><th style='padding: 10px;'>Type</th><td style='padding: 10px;'>";
-    echo "<span style='color: " . $colors[$row["Type1"]] . "; font-weight: bold;'>" . $row["Type1"] . "</span>";
-    if (!empty($row["Type2"])) {
-        echo " / <span style='color: " . $colors[$row["Type2"]] . "; font-weight: bold;'>" . $row["Type2"] . "</span>";
+// Affichage des détails du Pokémon
+echo "<div class='pokemon-detail-container' style='display: flex; align-items: center; justify-content: space-between; background-color: $bgColor; padding: 20px; border-radius: 10px;'>";
+
+// Ancêtre
+echo "<div class='pokemon-evolution' style='text-align: center; width: 20%;'>";
+if ($resultAncetre->num_rows > 0) {
+    while ($anc = $resultAncetre->fetch_assoc()) {
+        echo "<a href='pokemon_detail.php?id=" . $anc['IdPokemon'] . "'>";
+        echo "<img src='" . $anc['UrlPhoto'] . "' alt='" . $anc['NomPokemon'] . "' class='evolution-image' style='max-width: 100px;'>";
+        echo "<p>" . $anc['NomPokemon'] . "</p>";
+        echo "</a>";
     }
-    echo "</td></tr>";
-    //Informations du Pokemon
-    echo "<tr><th style='padding: 10px;'>Points de Vie</th><td style='padding: 10px;'>" . $row["PtsVie"] . "</td></tr>";
-    echo "<tr><th style='padding: 10px;'>Défense</th><td style='padding: 10px;'>" . $row["PtsDefense"] . "</td></tr>";
-    echo "<tr><th style='padding: 10px;'>Vitesse</th><td style='padding: 10px;'>" . $row["PtsVitesse"] . "</td></tr>";
-    echo "<tr><th style='padding: 10px;'>Spéciaux</th><td style='padding: 10px;'>" . $row["PtsSpeciaux"] . "</td></tr>";
-    echo "</table>";
 } else {
-    echo "<p style='text-align: center;'>Aucun Pokémon trouvé.</p>";
+    echo "<p>Pas d'ancêtre</p>";
 }
+echo "</div>";
+
+// Pokémon principal
+echo "<div class='pokemon-main' style='text-align: center; width: 50%;'>";
+echo "<h2>" . htmlspecialchars($pokemon["NomPokemon"]) . "</h2>";
+echo "<img src='" . htmlspecialchars($pokemon["UrlPhoto"]) . "' alt='" . htmlspecialchars($pokemon["NomPokemon"]) . "' class='pokemon-image' style='max-width: 150px;'>";
+echo "<p>Type: " . $pokemon["Type1"];
+if (!empty($pokemon["Type2"])) {
+    echo " / " . $pokemon["Type2"];
+}
+echo "</p>";
+echo "<p>PV: " . $pokemon["PtsVie"] . " | Défense: " . $pokemon["PtsDefense"] . "</p>";
+echo "<p>Vitesse: " . $pokemon["PtsVitesse"] . " | Spéciaux: " . $pokemon["PtsSpeciaux"] . "</p>";
+echo "</div>";
+
+// Évolution
+echo "<div class='pokemon-evolution' style='text-align: center; width: 20%;'>";
+if ($resultEvo->num_rows > 0) {
+    while ($evo = $resultEvo->fetch_assoc()) {
+        echo "<a href='pokemon_detail.php?id=" . $evo['IdPokemon'] . "'>";
+        echo "<img src='" . $evo['UrlPhoto'] . "' alt='" . $evo['NomPokemon'] . "' class='evolution-image' style='max-width: 100px;'>";
+        echo "<p>" . $evo['NomPokemon'] . "</p>";
+        echo "</a>";
+    }
+} else {
+    echo "<p>Pas d'évolution</p>";
+}
+echo "</div>";
+
+
+echo "</div>";
 
 $databaseConnection->close();
-?>
-
-
-
-
-<?php
 require_once("footer.php");
 ?>

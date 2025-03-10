@@ -18,12 +18,13 @@
         <a href="index.php">
             <h1>Pokedex Du Professeur Chen</h1>
         </a>
-        <form id="search-bar" action="search_pokemon.php">
+        <form id="search-bar" action="search_pokemon.php" method="GET">
             <span class="input-group">
                 <input id="q" name="q" type="search" placeholder="Rechercher un pokémon"><button type="submit">🔎</button>
             </span>
         </form>
     </header>
+    
 
     <div id="main-wrapper">
 
