@@ -1,6 +1,6 @@
 -- Contient les données de la table user et plus bas celle de la table user_pokemon
 -- Déchargement des données de la table `user` --
---/!\ Mot de passe : esicad2025 --
+--/!\ Mot de passe des deux comptes : esicad2025 --
 INSERT INTO `user` (
         `IdUser`,
         `Nom`,
@@ -32,9 +32,12 @@ INSERT INTO `user_pokemon` (
         `IdPokemon`,
         `DateCapture`
     )
-VALUES (21, 1, 1, '2025-03-10 12:32:52'),
-    (22, 1, 25, '2025-03-10 12:32:55'),
-    (23, 1, 1, '2025-03-10 12:51:01');
+VALUES (33, 1, 10, '2025-03-13 10:45:11'),
+    (32, 1, 5, '2025-03-13 10:45:10'),
+    (31, 1, 1, '2025-03-13 10:45:08'),
+    (34, 1, 16, '2025-03-13 10:45:13'),
+    (35, 1, 19, '2025-03-13 10:45:15'),
+    (36, 1, 69, '2025-03-13 10:45:19');
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
 ;

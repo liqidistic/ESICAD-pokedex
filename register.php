@@ -1,9 +1,6 @@
     
 <?php
 require_once("head.php");
-?>
-
-<?php
 require_once("database-connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

@@ -4027,6 +4027,21 @@ VALUES (
     'testy',
     '$2y$10$fFmrw.AkM1rHeYPHNUrgLeiUWja90jgNjBI4ctgw/1GrSxwrcjeEm'
   );
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
+;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
+;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */
+;
+/*!40101 SET NAMES utf8mb4 */
+;
+--
+-- Base de données : `pokemon`
+--
+
 -- --------------------------------------------------------
 --
 -- Structure de la table `user_pokemon`
@@ -4041,7 +4056,7 @@ CREATE TABLE IF NOT EXISTS `user_pokemon` (
   PRIMARY KEY (`IdCapture`),
   KEY `IdUser` (`IdUser`),
   KEY `IdPokemon` (`IdPokemon`)
-) ENGINE = MyISAM AUTO_INCREMENT = 24 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = MyISAM AUTO_INCREMENT = 37 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 --
 -- Déchargement des données de la table `user_pokemon`
 --
@@ -4052,9 +4067,12 @@ INSERT INTO `user_pokemon` (
     `IdPokemon`,
     `DateCapture`
   )
-VALUES (22, 1, 25, '2025-03-10 12:32:55'),
-  (21, 1, 1, '2025-03-10 12:32:52'),
-  (23, 1, 1, '2025-03-10 12:51:01');
+VALUES (33, 1, 10, '2025-03-13 10:45:11'),
+  (32, 1, 5, '2025-03-13 10:45:10'),
+  (31, 1, 1, '2025-03-13 10:45:08'),
+  (34, 1, 16, '2025-03-13 10:45:13'),
+  (35, 1, 19, '2025-03-13 10:45:15'),
+  (36, 1, 69, '2025-03-13 10:45:19');
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
 ;

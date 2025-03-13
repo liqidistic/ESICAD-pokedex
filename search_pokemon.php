@@ -1,11 +1,7 @@
 <?php
 require_once("head.php");
-?>
-<?php
 require_once("database-connection.php")
-?>
 
-<?php
 $recherche = $_GET["q"];
 $sql = "SELECT p.*, t.NomType, t.IdType
     FROM pokemon p
@@ -40,7 +36,6 @@ while($row = mysqli_fetch_assoc($result)){
 echo "</tr>"; 
 echo "</table>";
 }
-?> 
-<?php
+
 require_once("footer.php");
 ?>

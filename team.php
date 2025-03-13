@@ -1,8 +1,5 @@
 <?php
 require_once("head.php");
-?>
-
-<?php
 require_once("database-connection.php");
 require_once("functions.php");
 
@@ -29,14 +26,8 @@ $error = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["pokemon_id"])) {
     $pokemonId = $_POST["pokemon_id"];
     $resultMessage = addPokemonToTeam($IdUser, $pokemonId, $databaseConnection);
-    
-    if (strpos($resultMessage, "ajouté") !== false) {
-        $success = $resultMessage;
-    } else {
-        $error = $resultMessage;
-    }
     // Rediriger pour actualiser la page après l'ajout
-    header("Location: equipe.php");
+    header("Location: team.php");
     exit();
 }
 
@@ -44,13 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["pokemon_id"])) {
 if (isset($_GET['remove'])) {
     $captureId = $_GET['remove'];
     $resultMessage = removePokemonFromTeam($captureId, $databaseConnection);
-    if (strpos($resultMessage, "retiré") !== false) {
-        $success = $resultMessage;
-    } else {
-        $error = $resultMessage;
-    }
     // Rediriger pour actualiser la page après le retrait
-    header("Location: equipe.php");
+    header("Location: team.php");
     exit();
 }
 
@@ -62,9 +48,6 @@ if (isset($_GET['remove'])) {
 </head>
 <body>
     <h2>Mon équipe</h2>
-    
-    <?php if ($success) echo "<p style='color:green;'>$success</p>"; ?>
-    <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
     
     <h3>Pokémons dans votre équipe</h3>
     <?php if ($pokemonsExist): ?>
