@@ -4,42 +4,30 @@ require_once("database-connection.php");
 require_once("functions.php");
 
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php"); // Redirige si l'utilisateur n'est pas connecté
+    header("Location: login.php");
     exit();
 }
 
-$IdUser = $_SESSION['user_id']; // Utiliser l'ID de l'utilisateur connecté
-
-// Récupérer les Pokémon de l'équipe de l'utilisateur
+$IdUser = $_SESSION['user_id'];
 $pokemonsInTeam = getUserPokemons($IdUser, $databaseConnection);
+$pokemonsExist = $pokemonsInTeam->num_rows > 0;
 
-// Vérifie si des Pokémon sont retournés
-if ($pokemonsInTeam->num_rows > 0) {
-    $pokemonsExist = true;
-} else {
-    $pokemonsExist = false;
-}
-
-// Ajouter un Pokémon à l'équipe
-$success = '';
-$error = '';
+// Gestion de l'ajout et de la suppression de Pokémon
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["pokemon_id"])) {
     $pokemonId = $_POST["pokemon_id"];
-    $resultMessage = addPokemonToTeam($IdUser, $pokemonId, $databaseConnection);
-    // Rediriger pour actualiser la page après l'ajout
+    addPokemonToTeam($IdUser, $pokemonId, $databaseConnection);
     header("Location: team.php");
     exit();
 }
-
-// Supprimer un Pokémon de l'équipe
 if (isset($_GET['remove'])) {
     $captureId = $_GET['remove'];
-    $resultMessage = removePokemonFromTeam($captureId, $databaseConnection);
-    // Rediriger pour actualiser la page après le retrait
+    removePokemonFromTeam($captureId, $databaseConnection);
     header("Location: team.php");
     exit();
 }
 
+// Récupérer les recherches favorites
+$favoriteSearches = getFavoriteSearches($IdUser, $databaseConnection);
 ?>
 
 <html>
@@ -78,6 +66,31 @@ if (isset($_GET['remove'])) {
         </select>
         <button type="submit">Ajouter à l'équipe</button>
     </form>
+
+    <h3>Vos recherches favorites</h3>
+    <?php if ($favoriteSearches->num_rows > 0): ?>
+        <ul>
+            <?php while ($search = $favoriteSearches->fetch_assoc()): ?>
+                <li>
+                    <a href="search_pokemon.php?q=<?php echo urlencode($search['SearchQuery']); ?>">
+                        <?php echo htmlspecialchars($search['SearchQuery']); ?>
+                    </a> - Sauvegardé le : <?php echo htmlspecialchars($search['DateSaved']); ?>
+                    <a href="?remove_search=<?php echo $search['IdSearch']; ?>">Supprimer</a>
+                </li>
+            <?php endwhile; ?>
+        </ul>
+    <?php else: ?>
+        <p>Vous n'avez aucune recherche favorite pour le moment.</p>
+    <?php endif; ?>
+
+    <?php
+    if (isset($_GET['remove_search'])) {
+        $searchId = $_GET['remove_search'];
+        removeFavoriteSearch($searchId, $databaseConnection);
+        header("Location: team.php");
+        exit();
+    }
+    ?>
     
     <p><a href="logout.php">Se déconnecter</a></p>
 </body>

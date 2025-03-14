@@ -1,9 +1,10 @@
+-- MOT DE PASSE DES DEUX COMPTES : esicad2025
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 10 mars 2025 à 12:19
+-- Généré le : ven. 14 mars 2025 à 14:40
 -- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.18
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1953,6 +1954,27 @@ VALUES (1, 2),
   (133, 134),
   (133, 135),
   (133, 136);
+-- --------------------------------------------------------
+--
+-- Structure de la table `favorite_searches`
+--
+
+DROP TABLE IF EXISTS `favorite_searches`;
+CREATE TABLE IF NOT EXISTS `favorite_searches` (
+  `IdSearch` int NOT NULL AUTO_INCREMENT,
+  `IdUser` int NOT NULL,
+  `SearchQuery` varchar(255) NOT NULL,
+  `DateSaved` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`IdSearch`),
+  KEY `IdUser` (`IdUser`)
+) ENGINE = MyISAM AUTO_INCREMENT = 3 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Déchargement des données de la table `favorite_searches`
+--
+
+INSERT INTO `favorite_searches` (`IdSearch`, `IdUser`, `SearchQuery`, `DateSaved`)
+VALUES (1, 1, 'feu', '2025-03-14 15:26:38'),
+  (2, 1, 'bizar', '2025-03-14 15:29:53');
 -- --------------------------------------------------------
 --
 -- Structure de la table `pokemon`
@@ -4027,21 +4049,6 @@ VALUES (
     'testy',
     '$2y$10$fFmrw.AkM1rHeYPHNUrgLeiUWja90jgNjBI4ctgw/1GrSxwrcjeEm'
   );
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
-;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
-;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */
-;
-/*!40101 SET NAMES utf8mb4 */
-;
---
--- Base de données : `pokemon`
---
-
 -- --------------------------------------------------------
 --
 -- Structure de la table `user_pokemon`
@@ -4056,7 +4063,7 @@ CREATE TABLE IF NOT EXISTS `user_pokemon` (
   PRIMARY KEY (`IdCapture`),
   KEY `IdUser` (`IdUser`),
   KEY `IdPokemon` (`IdPokemon`)
-) ENGINE = MyISAM AUTO_INCREMENT = 37 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = MyISAM AUTO_INCREMENT = 43 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 --
 -- Déchargement des données de la table `user_pokemon`
 --
@@ -4067,12 +4074,11 @@ INSERT INTO `user_pokemon` (
     `IdPokemon`,
     `DateCapture`
   )
-VALUES (33, 1, 10, '2025-03-13 10:45:11'),
-  (32, 1, 5, '2025-03-13 10:45:10'),
-  (31, 1, 1, '2025-03-13 10:45:08'),
-  (34, 1, 16, '2025-03-13 10:45:13'),
-  (35, 1, 19, '2025-03-13 10:45:15'),
-  (36, 1, 69, '2025-03-13 10:45:19');
+VALUES (37, 1, 1, '2025-03-14 15:33:15'),
+  (38, 1, 1, '2025-03-14 15:33:15'),
+  (39, 1, 1, '2025-03-14 15:33:16'),
+  (40, 1, 1, '2025-03-14 15:33:17'),
+  (41, 1, 1, '2025-03-14 15:33:17');
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
 ;
