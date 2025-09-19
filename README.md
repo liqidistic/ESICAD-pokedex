@@ -1,9 +1,20 @@
 # ESICAD Pokédex
+Ce projet constitue le deuxième TP de développement Web réalisé dans le cadre du BTS SIO (1ère année) à l’ESICAD.
 
-Ce projet est le squelette du TP2 de développement Web du BTS SIO 1ere année de l'ESICAD.
+L’objectif principal est de développer un Pokédex en ligne intégrant les fonctionnalités suivantes :
 
-Vous pouvez [forker](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) ce dépôt Git pour en créer une copie sur votre compte GitHub personnel, et créer ainsi votre version du projet.
+Mise en place d’un MCD et MLD pour la conception et la gestion de la base de données.
 
-La page principale est `index.php`, elle va charger les différentes parties du site dans des fichiers PHP séparés à l'aide de l'instruction [`require_once()`](https://www.php.net/manual/fr/function.require-once.php).
+Recherche de Pokémon par :
 
-Suivez les instructions du TP pour implémenter les différentes fonctionnalités du site web.
+- nom,
+
+- un ou plusieurs types,
+
+- ou encore par leurs statistiques.
+
+Création et gestion d’un profil utilisateur, permettant :
+
+- de sélectionner les Pokémon possédés,
+
+- de constituer et gérer une équipe personnalisée.
