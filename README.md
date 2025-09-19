@@ -1,4 +1,7 @@
 # ESICAD Pokédex
+
+HTML/TYPESCRIPT/CSS
+
 Ce projet constitue le deuxième TP de développement Web réalisé dans le cadre du BTS SIO (1ère année) à l’ESICAD.
 
 L’objectif principal est de développer un Pokédex en ligne intégrant les fonctionnalités suivantes :
